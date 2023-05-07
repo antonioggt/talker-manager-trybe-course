@@ -4,7 +4,7 @@ const fs = require('fs').promises;
 
 const router = express.Router();
 
-const talkerPath = path.resolve(__dirname, './talker.json');
+const talkerPath = path.resolve(__dirname,'..', 'talker.json');
 
 router.get('/', async (_req, res) => {
     try {
