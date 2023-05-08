@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs').promises;
+const loginValidation = require('../middlewares/loginValidation');
+const randomToken = require('./tokenGenerator');
 
 const router = express.Router();
 
@@ -31,6 +33,13 @@ router.get('/:id', async (req, res) => {
     return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
   } catch (error) {
     console.error(error);
+  }
+});
+
+router.post('/', async (req, res) => {
+  const { email, password } = req.body;
+  if (email && password) {
+    res.status(200).json({ token: `${randomToken}` });
   }
 });
 
