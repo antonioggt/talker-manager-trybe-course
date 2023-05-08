@@ -7,12 +7,12 @@ const router = express.Router();
 const { isAgeValid, isNameValid, isTalkValid } = require('../middlewares/validations');
 const { isTokenValid, isDateValid, isRateValid } = require('../middlewares/validations');
 
+const val1 = isTokenValid;
 const val2 = isNameValid;
 const val3 = isTalkValid;
-const val4 = isTokenValid;
+const val4 = isAgeValid;
 const val5 = isDateValid;
 const val6 = isRateValid;
-const val1 = isAgeValid;
 
 const talkerPath = path.resolve(__dirname, '..', 'talker.json');
 
@@ -44,7 +44,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-  router.post('/', val4, val2, val3, val1, val5, val6, async (req, res) => {
+  router.post('/', val1, val2, val3, val4, val5, val6, async (req, res) => {
     const resp = await fs.readFile(talkerPath, 'utf-8');
     const parsedResp = JSON.parse(resp);
     const user = { ...req.body };
@@ -55,6 +55,25 @@ router.get('/:id', async (req, res) => {
     await fs.writeFile(talkerPath, JSON.stringify(parsedResp));
 
     return res.status(201).json(newUser);
+  });
+
+  router.put('/:id', val1, val2, val3, val4, val5, val6, async (req, res) => {
+    const { ...updatingPerson } = req.body; 
+    const { id } = req.params;
+    const resp = await fs.readFile(talkerPath, 'utf-8');
+    const parsedResp = JSON.parse(resp);
+    const findUser = parsedResp.find((e) => e.id === +id);
+    const message = 'Pessoa palestrante não encontrada';
+    if (!findUser) {
+      return res.status(404).json({ message });
+    }
+    const putUser = {
+      id: +id,
+      ...updatingPerson,
+    };
+    const filter = parsedResp.filter((e) => e.id !== +id);
+    await fs.writeFile(talkerPath, JSON.stringify([...filter, putUser]), 'utf-8');
+    return res.status(200).json(putUser);
   });
 
 module.exports = router;
