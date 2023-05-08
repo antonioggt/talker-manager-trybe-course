@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs').promises;
-const loginValidation = require('../middlewares/loginValidation');
 const randomToken = require('./tokenGenerator');
 
 const router = express.Router();
