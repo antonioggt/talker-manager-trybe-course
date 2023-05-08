@@ -1,7 +1,7 @@
+const crypto = require('crypto');
+
 const randomToken = () => {
-  const mathRnd = Math.random();
-  const stringfy = mathRnd.toString();
-  const rndTkn = stringfy.slice(-16);
+  const rndTkn = crypto.randomBytes(8).toString('hex');
   return rndTkn;
 };
 
