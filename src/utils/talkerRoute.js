@@ -16,6 +16,15 @@ const val6 = isRateValid;
 
 const talkerPath = path.resolve(__dirname, '..', 'talker.json');
 
+router.get('/search', isTokenValid, async (req, res) => {
+  const resp = await fs.readFile(talkerPath, 'utf-8');
+  const parsedResp = JSON.parse(resp);
+
+  const filter = parsedResp.filter((e) => e.name.includes(req.query.q));
+  console.log(filter);
+  return res.status(200).json(filter);
+});
+
 router.get('/', async (_req, res) => {
     try {
       const resp = await fs.readFile(talkerPath, 'utf-8');
