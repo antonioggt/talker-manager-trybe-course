@@ -76,4 +76,16 @@ router.get('/:id', async (req, res) => {
     return res.status(200).json(putUser);
   });
 
+  router.delete('/:id', isTokenValid, async (req, res) => {
+    const resp = await fs.readFile(talkerPath, 'utf-8');
+    const parsedResp = JSON.parse(resp);
+    const { id } = req.params;
+
+    const deleteUser = parsedResp.filter((e) => e.id !== +id);
+
+    await fs.writeFile(talkerPath, JSON.stringify(deleteUser), 'utf-8');
+    
+    return res.status(204).json();
+  });
+
 module.exports = router;
