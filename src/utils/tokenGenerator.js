@@ -1,6 +1,7 @@
 const randomToken = () => {
-  const mathRnd = Math.random().toString();
-  const rndTkn = mathRnd.slice(-16);
+  const mathRnd = Math.random();
+  const stringfy = mathRnd.toString();
+  const rndTkn = stringfy.slice(-16);
   return rndTkn;
 };
 
