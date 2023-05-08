@@ -18,14 +18,14 @@ router.get('/', async (_req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  const { id } = req.params
+  const { id } = req.params;
 
   const resp = await fs.readFile(talkerPath, 'utf-8');
-  const parsedResp = JSON.parse(response);
+  const parsedResp = JSON.parse(resp);
 
   try {
-    const findId = parsedResp.find((e) => e.id === +id)
-    if(findId) {
+    const findId = parsedResp.find((e) => e.id === +id);
+    if (findId) {
       return res.status(200).json(findId);
     }
     return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
