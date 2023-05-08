@@ -4,6 +4,16 @@ const fs = require('fs').promises;
 
 const router = express.Router();
 
+const { isAgeValid, isNameValid, isTalkValid } = require('../middlewares/validations');
+const { isTokenValid, isDateValid, isRateValid } = require('../middlewares/validations');
+
+const val2 = isNameValid;
+const val3 = isTalkValid;
+const val4 = isTokenValid;
+const val5 = isDateValid;
+const val6 = isRateValid;
+const val1 = isAgeValid;
+
 const talkerPath = path.resolve(__dirname, '..', 'talker.json');
 
 router.get('/', async (_req, res) => {
@@ -33,5 +43,18 @@ router.get('/:id', async (req, res) => {
     console.error(error);
   }
 });
+
+  router.post('/', val1, val2, val3, val4, val5, val6, async (req, res) => {
+    const resp = await fs.readFile(talkerPath, 'utf-8');
+    const parsedResp = JSON.parse(resp);
+    const user = { ...req.body };
+    const autoIncrement = parsedResp[parsedResp.length - 1].id + 1;
+    const newUser = { id: autoIncrement, ...user };
+
+    parsedResp.push(newUser);
+    await fs.writeFile(talkerPath, JSON.stringify(parsedResp));
+
+    return res.status(201).json(newUser);
+  });
 
 module.exports = router;

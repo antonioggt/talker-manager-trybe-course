@@ -28,8 +28,90 @@ const isPasswordValid = (req, res, next) => {
     
   if (!passwordValidator) {
     return res.status(400).json({ message: 'O "password" deve ter pelo menos 6 caracteres' });
-    }
+  }
     
+  next();
+};
+
+const isTokenValid = (req, res, next) => {
+  const token = req.headers.authorization;
+
+  if (!token) {
+    return res.status(401).json({ message: 'Token não encontrado' });
+  }
+  if (typeof token !== 'string' || token.length !== 16) {
+    return res.status(401).json({ message: 'Token inválido' });
+  }
+    
+  next();
+};
+
+const isNameValid = (req, res, next) => {
+  const { name } = req.body;
+
+  if (!name) {
+    return res.status(400).json({ message: 'O campo "name" é obrigatório' });
+  }
+  if (name.length < 3) {
+    return res.status(400).json({ message: 'O "name" deve ter pelo menos 3 caracteres' });
+  }
+
+  next();
+};
+
+const isAgeValid = (req, res, next) => {
+  const { age } = req.body;
+  const message = 'O campo "age" deve ser um número inteiro igual ou maior que 18';
+
+  if (!age) {
+    return res.status(400).json({ message: 'O campo "age" é obrigatório' });
+  }
+  if (!(Number.isInteger(age)) || age < 18) {
+    return res.status(400).json({ message });
+  }
+
+  next();
+};
+
+const isTalkValid = (req, res, next) => {
+  const { talk } = req.body;
+
+  if (!talk) {
+    return res.status(400).json({ message: 'O campo "talk" é obrigatório' });
+  }
+  
+  next();
+};
+
+const isDateValid = (req, res, next) => {
+  const { talk } = req.body;
+  const { watchedAt } = talk;
+
+  if (!watchedAt) {
+    return res.status(400).json({ message: 'O campo "watchedAt" é obrigatório' });
+  }
+
+  const dateValidator = /(\d{2})(\/)(\d{2})(\/)(\d{4})$/.test(watchedAt);
+
+  if (!dateValidator) {
+    return res.status(400).json({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
+  }
+  
+  next();
+};
+
+const isRateValid = (req, res, next) => {
+  const { talk } = req.body;
+  const { rate } = talk;
+  const message = 'O campo "rate" deve ser um número inteiro entre 1 e 5';
+
+  if (rate === undefined) {
+    return res.status(400).json({ message: 'O campo "rate" é obrigatório' });
+  }
+  if (!Number.isInteger(rate) || rate < 1 || rate > 5) { 
+    return res.status(400).json({ message });
+  }
+
   next();
 };
 
@@ -37,4 +119,10 @@ module.exports = {
     isLoginValid,
     isEmailValid,
     isPasswordValid,
+    isTokenValid,
+    isNameValid,
+    isAgeValid,
+    isTalkValid,
+    isDateValid,
+    isRateValid,
 };
