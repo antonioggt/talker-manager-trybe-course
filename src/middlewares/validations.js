@@ -36,9 +36,10 @@ const isPasswordValid = (req, res, next) => {
 const isTokenValid = (req, res, next) => {
   const token = req.headers.authorization;
 
-  if (!token) {
+  if (token === undefined) {
     return res.status(401).json({ message: 'Token não encontrado' });
   }
+  console.log(`**********${token}***********`);
   if (typeof token !== 'string' || token.length !== 16) {
     return res.status(401).json({ message: 'Token inválido' });
   }

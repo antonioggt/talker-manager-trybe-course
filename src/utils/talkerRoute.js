@@ -44,7 +44,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-  router.post('/', val1, val2, val3, val4, val5, val6, async (req, res) => {
+  router.post('/', val4, val2, val3, val1, val5, val6, async (req, res) => {
     const resp = await fs.readFile(talkerPath, 'utf-8');
     const parsedResp = JSON.parse(resp);
     const user = { ...req.body };
