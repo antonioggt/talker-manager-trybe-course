@@ -39,7 +39,7 @@ const isTokenValid = (req, res, next) => {
   if (token === undefined) {
     return res.status(401).json({ message: 'Token não encontrado' });
   }
-  console.log(`**********${token}***********`);
+
   if (typeof token !== 'string' || token.length !== 16) {
     return res.status(401).json({ message: 'Token inválido' });
   }
@@ -116,6 +116,44 @@ const isRateValid = (req, res, next) => {
   next();
 };
 
+const isRateFieldValid = (req, res, next) => {
+  const { rate } = req.query;
+  const message = 'O campo "rate" deve ser um número inteiro entre 1 e 5';
+
+  if (rate === undefined) {
+    return res.status(400).json({ message });
+  }
+  if (!Number.isInteger(+rate) || rate < 1 || rate > 5) { 
+    return res.status(400).json({ message });
+  }
+
+  next();
+};
+
+const isDateFieldValid = (req, res, next) => {
+  const { date } = req.query;
+  const message = 'O parâmetro "date" deve ter o formato "dd/mm/aaaa"';
+
+  const dateValidator = /(\d{2})(\/)(\d{2})(\/)(\d{4})$/.test(date);
+
+  if (date && !dateValidator) {
+    return res.status(400).json({ message });
+  }
+  
+  next();
+};
+
+const isRateForPatchValid = async (req, res, next) => {
+  const { rate } = req.query;
+  const intRate = +rate;
+  if (rate && (intRate < 1 || intRate > 5 || !Number.isInteger(intRate))) {
+    return res.status(400).json({
+      message: 'O campo "rate" deve ser um número inteiro entre 1 e 5',
+    });
+  }
+  next();
+};
+
 module.exports = {
     isLoginValid,
     isEmailValid,
@@ -126,4 +164,7 @@ module.exports = {
     isTalkValid,
     isDateValid,
     isRateValid,
+    isRateFieldValid,
+    isDateFieldValid,
+    isRateForPatchValid,
 };
