@@ -20,6 +20,7 @@ app.use('/login', loginFsFunction);
   const val1 = isTokenValid;
   const val7 = isRateFieldValid;
   const val8 = isDateFieldValid;
+  const val9 = isRateForPatchValid;
   const resp = await fs.readFile(talkerPath, 'utf-8');
   const parsedResp = await JSON.parse(resp);
   let dinamicResp = await parsedResp;
@@ -39,12 +40,28 @@ app.use('/login', loginFsFunction);
   console.log(dinamicResp);
   return res.status(200).json(dinamicResp);
 });
+
+app.patch('/talker/rate/:id', val1, val9, async (req, res) => {
+  const { id } = req.params;
+  const { rate } = req.body;
+
+  const resp = await fs.readFile(talkerPath, 'utf-8');
+  const parsedResp = await JSON.parse(resp);
+  const user = parsedResp.find((e) => e.id === +id);
+
+  user.talk.rate = rate;
+
+  const newUser = [...parsedResp, user];
+
+  await fs.writeFile(talkerPath, JSON.stringify(newUser));
+
+  return res.status(204).end();
+});
 */
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
-
 app.listen(PORT, () => {
   console.log('Online');
 });

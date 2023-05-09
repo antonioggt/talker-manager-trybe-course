@@ -6,6 +6,7 @@ const router = express.Router();
 
 const { isAgeValid, isNameValid, isTalkValid } = require('../middlewares/validations');
 const { isTokenValid, isDateValid, isRateValid } = require('../middlewares/validations');
+const { qName, qRate } = require('./qQueryMiddle');
 
 const val1 = isTokenValid;
 const val2 = isNameValid;
@@ -13,21 +14,17 @@ const val3 = isTalkValid;
 const val4 = isAgeValid;
 const val5 = isDateValid;
 const val6 = isRateValid;
+const val7 = qName;
+const val8 = qRate;
 
 const talkerPath = path.resolve(__dirname, '..', 'talker.json');
 
-router.get('/search', val1, async (req, res) => {
-  const resp = await fs.readFile(talkerPath, 'utf-8');
-  const parsedResp = JSON.parse(resp);
+router.get('/search', val1, val7, val8, async (req, res) => {
   try {
-    const { q } = req.query;
-    if (!q) {
-      return res.status(200).json(parsedResp);
-    }
-    const filter = parsedResp.filter((e) => e.name.includes(q));
-    res.status(200).json(filter);
+  const resp = req.xxx;
+  console.log('resp ***', resp);
+  return res.status(200).json(resp);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: error.message });
   }
 });
