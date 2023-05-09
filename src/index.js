@@ -32,7 +32,6 @@ async (req, res) => {
       res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
     }
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: error.message });
   }
 });
