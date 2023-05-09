@@ -21,6 +21,16 @@ const treatWatched = async (date, filtered) => {
     const filter = filtered.filter((e) => e.talk.watchedAt === date);
     return filter;
   };
+
+const patchRate = async (id, rate) => {
+  const users = await treatName();
+  const findUser = users.find((e) => e.id === id);
+  if (findUser) {
+      findUser.talk.rate = rate;
+    await fs.writeFile(talkerPath, JSON.stringify(users));
+  }
+  return findUser;
+};
   
 const qName = async (req, res, next) => {
     const { q } = req.query;
@@ -68,9 +78,21 @@ const qWatchedAt = async (req, res, next) => {
     }
     next();
   };
-  
+
+const qRateforChanges = (req, res, next) => {
+  const { rate } = req.body;
+  if (rate === undefined) return res.status(400).json({ message: 'O campo "rate" é obrigatório' });
+  if (!Number.isInteger(rate) || (rate < 1 || rate > 5)) {    
+  return res.status(400)
+  .json({ message: 'O campo "rate" deve ser um número inteiro entre 1 e 5' });
+  }
+  next();
+};
+
 module.exports = {
     qName,
     qRate,
     qWatchedAt,
+    qRateforChanges,
+    patchRate,
 };
