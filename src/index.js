@@ -33,6 +33,7 @@ async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
+    console.log('2551');
   }
 });
 // não remova esse endpoint, e para o avaliador funcionar
