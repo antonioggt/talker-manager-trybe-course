@@ -6,7 +6,7 @@ const router = express.Router();
 
 const { isAgeValid, isNameValid, isTalkValid } = require('../middlewares/validations');
 const { isTokenValid, isDateValid, isRateValid } = require('../middlewares/validations');
-const { qName, qRate } = require('./qQueryMiddle');
+const { qName, qRate, qWatchedAt } = require('./qQueryMiddle');
 
 const val1 = isTokenValid;
 const val2 = isNameValid;
@@ -16,10 +16,11 @@ const val5 = isDateValid;
 const val6 = isRateValid;
 const val7 = qName;
 const val8 = qRate;
+const val9 = qWatchedAt;
 
 const talkerPath = path.resolve(__dirname, '..', 'talker.json');
 
-router.get('/search', val1, val7, val8, async (req, res) => {
+router.get('/search', val1, val7, val8, val9, async (req, res) => {
   try {
   const resp = req.xxx;
   console.log('resp ***', resp);

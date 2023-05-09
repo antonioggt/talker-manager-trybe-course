@@ -17,6 +17,11 @@ const treatRate = async (rate, filtered) => {
   return filter;
 };
 
+const treatWatched = async (date, filtered) => {
+    const filter = filtered.filter((e) => e.talk.watchedAt === date);
+    return filter;
+  };
+  
 const qName = async (req, res, next) => {
     const { q } = req.query;
     const parsedResp = await treatName();
@@ -48,8 +53,24 @@ const qName = async (req, res, next) => {
   }
   next();
 };
+
+const qWatchedAt = async (req, res, next) => {
+    const { date } = req.query;
+    if (date !== undefined && date !== '') {
+      const dateValidator = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i;
+      const validatedDate = dateValidator.test(date);
+       if (!validatedDate) {
+        return res.status(400)
+                  .json({ message: 'O parâmetro "date" deve ter o formato "dd/mm/aaaa"' });
+      }
+      const filteredTalkers = await treatWatched(date, req.xxx);
+      req.xxx = filteredTalkers;
+    }
+    next();
+  };
   
 module.exports = {
     qName,
     qRate,
+    qWatchedAt,
 };
