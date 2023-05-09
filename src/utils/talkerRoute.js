@@ -8,6 +8,7 @@ const { isAgeValid, isNameValid, isTalkValid } = require('../middlewares/validat
 const { isTokenValid, isDateValid, isRateValid } = require('../middlewares/validations');
 const { qName, qRate, qWatchedAt } = require('./qQueryMiddle');
 
+// val = validation
 const val1 = isTokenValid;
 const val2 = isNameValid;
 const val3 = isTalkValid;

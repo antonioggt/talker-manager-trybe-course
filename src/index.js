@@ -24,7 +24,6 @@ qRateforChanges,
 async (req, res) => {
   try {
     const { id } = req.params;
-    console.log('iodfsbn');
     const { rate } = req.body;
     const updatedRate = await patchRate(Number(id), rate);
     if (updatedRate) {
