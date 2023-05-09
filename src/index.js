@@ -24,6 +24,7 @@ qRateforChanges,
 async (req, res) => {
   try {
     const { id } = req.params;
+    console.log('iodfsbn');
     const { rate } = req.body;
     const updatedRate = await patchRate(Number(id), rate);
     if (updatedRate) {
@@ -33,7 +34,6 @@ async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
-    console.log('2551');
   }
 });
 // não remova esse endpoint, e para o avaliador funcionar
